@@ -11,7 +11,7 @@ Both Simple RAG and Agentic RAG MUST be evaluated under identical conditions:
 
 1. **Same question set**: Both agents answer the exact same questions in the same order (seeded).
 2. **Same retriever config**: Both use the same retrieval backbone (BM25/BGE), same k, same index.
-3. **Same output schema**: Both produce `PredictionResult` with: id, question, predicted_answer, is_unanswerable_pred, contexts_used, reasoning_trace (empty for Simple RAG), latency_ms.
+3. **Same output schema**: Both produce `PredictionResult` with: id, question, predicted_answer, is_unanswerable_pred, contexts_used, reasoning_trace (empty for Simple RAG), latency_ms, prompt_tokens, completion_tokens, total_tokens.
 4. **Same metric functions**: One evaluation codepath for both — never separate eval logic per agent.
 5. **Blind LLM judge**: Judge prompt receives (question, context, answer) with NO agent identifier. Predictions shuffled before judging to prevent ordering bias.
 6. **Same judge params**: Single judge model, same temperature (0), same prompt template, same rubric.
@@ -23,7 +23,7 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 1: Project Scaffold & Environment ⬜
+## Phase 1: Project Scaffold & Environment ✅
 **Session goal**: Repo structure, conda env, all dependencies installed and verified.
 
 - [ ] Create directory structure:
@@ -45,13 +45,13 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 2: Dataset Handling ⬜
+## Phase 2: Dataset Handling ✅
 **Session goal**: SQuAD 2.0 loaded, preprocessed, exported to JSONL.
 
 - [ ] Implement `src/data/schema.py` — unified QAExample dataclass:
   - Fields: id, question, context, answers (list), is_unanswerable, source_doc_id (from SQuAD title)
 - [ ] Implement `src/data/schema.py` — PredictionResult dataclass (shared output format for ALL agents):
-  - Fields: id, question, predicted_answer, is_unanswerable_pred, contexts_used, reasoning_trace, latency_ms, agent_type
+  - Fields: id, question, predicted_answer, is_unanswerable_pred, contexts_used, reasoning_trace, latency_ms, agent_type, prompt_tokens, completion_tokens, total_tokens
 - [ ] Implement `src/data/squad_loader.py` — download SQuAD 2.0 via HuggingFace datasets, preprocess to schema
 - [ ] Add sampling utility (N examples, configurable answerable/unanswerable ratio, seed from config)
 - [ ] Export dev set to `data/squad_v2_dev.jsonl`
@@ -161,6 +161,7 @@ Any violation of these invariants is a bug.
   - Statistical comparison: mean, std, 95% confidence intervals (t-distribution)
   - Per-category breakdown: answerable vs unanswerable
   - Retrieval quality: hit-rate@k, MRR (shared retriever, so should be identical — assert this)
+  - Cost/latency ratio: avg tokens per query (prompt + completion), avg latency, agentic/simple ratio
 - [ ] Create `configs/experiment.yaml` — experiment config schema:
   - `task`: rag_eval (extensible to retrieval_eval, k_ablation later)
   - `agents`: [simple_rag, agentic_rag]
@@ -223,6 +224,7 @@ Any violation of these invariants is a bug.
   - Metrics tables, charts, insights
   - Failure analysis comparison
   - Statistical significance of differences
+  - Performance vs Cost section: is agentic RAG worth the extra tokens/latency?
 - [ ] Create demo script for side-by-side comparison
 - [ ] Record demo video
 
@@ -233,8 +235,8 @@ Any violation of these invariants is a bug.
 ## Progress Tracker
 | Phase | Status | Session Date |
 |-------|--------|-------------|
-| 1. Scaffold & Env | ⬜ Not started | |
-| 2. Dataset | ⬜ Not started | |
+| 1. Scaffold & Env | ✅ Complete | 2026-04-01 |
+| 2. Dataset | ✅ Complete | 2026-04-01 |
 | 3. Retrieval | ⬜ Not started | |
 | 4. Simple RAG | ⬜ Not started | |
 | 5. Agentic RAG | ⬜ Not started | |

@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project-specific
+data/
+evaluation/predictions/
+evaluation/checkpoints/
+evaluation/results/
+reports/figures/
+*.jsonl
+model_cache/
+.cache/
