@@ -101,20 +101,41 @@ Any violation of these invariants is a bug.
 ---
 
 ## Phase 5: Agentic RAG Agent ⬜
-**Session goal**: Multi-step agent with tools (retrieve, refine, verify) working.
+**Session goal**: Multi-step CRAG/Self-RAG inspired agent with 5 tools and iterative refinement.
 
 **Pre-req**: vLLM server running.
 
-- [ ] Implement `src/agents/tools.py` — retrieve, refine_question, verify_answer tools
-- [ ] Implement `src/agents/agentic_rag.py` — multi-step agent loop (plan → act → reflect, max 3 iterations)
+**Design** (inspired by CRAG + Self-RAG papers):
+- Unlike Simple RAG (single-pass, no decision-making), the Agentic RAG agent makes explicit decisions at each step: is the retrieval good enough? should I rewrite the query? is this answerable? is my answer supported?
+- Agent loop: Retrieve → Assess relevance → (Rewrite & re-retrieve if poor) → Check answerability → Generate with self-verification
+- Max 3 iterations for query refinement, then fallback
+
+**5 Agent Tools** (all use the shared LLM client):
+1. `retrieve(query)` — BM25 retrieval (same retriever as Simple RAG)
+2. `assess_relevance(passages, query)` — LLM scores if passages are relevant (high/medium/low)
+3. `rewrite_query(query, passages)` — LLM rewrites query when retrieval quality is poor
+4. `check_answerability(passages, query)` — LLM decides if question is answerable from passages
+5. `generate_answer(passages, query)` — Final answer generation with self-verification
+
+- [ ] Implement `src/agents/tools.py` — 5 tool functions (retrieve, assess_relevance, rewrite_query, check_answerability, generate_answer)
+- [ ] Implement `src/agents/agentic_rag.py` — agent loop:
+  - Step 1: Retrieve top-k passages
+  - Step 2: Assess relevance → if low, rewrite query and re-retrieve (up to 2 retries)
+  - Step 3: Check answerability → if unanswerable, return "unanswerable" early
+  - Step 4: Generate answer with self-verification (is answer supported by passages?)
   - Must output PredictionResult (the SAME shared schema as Simple RAG)
-  - reasoning_trace populated with tool calls and intermediate steps
+  - reasoning_trace populated with all tool calls, decisions, and intermediate steps
+  - Token counts aggregated across all LLM calls in the loop
 - [ ] Create `configs/agentic_rag.yaml` (inherits from base.yaml, no agent-specific eval params)
-- [ ] **Verify**: Run on 5 questions, confirm multi-step traces with tool calls, valid PredictionResult
+- [ ] **Verify**: Run on 5 questions (mix answerable + unanswerable), confirm:
+  - Multi-step reasoning traces showing tool calls and decisions
+  - Query rewriting triggered on at least 1 hard question
+  - Unanswerable detection working
+  - Valid PredictionResult with aggregated token counts
 
 **Consistency note**: Uses the SAME retriever instance, SAME LLM client, SAME output schema. Only the orchestration logic differs.
 
-**Done when**: Agentic RAG produces PredictionResult objects with reasoning traces.
+**Done when**: Agentic RAG produces PredictionResult objects with rich reasoning traces showing multi-step decision-making.
 
 ---
 
