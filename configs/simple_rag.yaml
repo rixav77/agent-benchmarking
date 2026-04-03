@@ -1,0 +1,7 @@
+# Simple RAG agent config
+# Inherits ALL settings from base.yaml — no agent-specific eval params
+# Only the agent_type identifier differs
+
+agent:
+  type: simple_rag
+  description: "Single-pass RAG: retrieve → prompt → answer"
