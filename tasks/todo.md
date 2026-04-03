@@ -100,7 +100,7 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 5: Agentic RAG Agent ⬜
+## Phase 5: Agentic RAG Agent ✅
 **Session goal**: Multi-step CRAG/Self-RAG inspired agent with 5 tools and iterative refinement.
 
 **Pre-req**: vLLM server running.
@@ -263,7 +263,7 @@ Any violation of these invariants is a bug.
 | 2. Dataset | ✅ Complete | 2026-04-01 |
 | 3. Retrieval | ✅ Complete | 2026-04-03 |
 | 4. Simple RAG | ✅ Complete | 2026-04-03 |
-| 5. Agentic RAG | ⬜ Not started | |
+| 5. Agentic RAG | ✅ Complete | 2026-04-04 |
 | 6. Evaluation | ⬜ Not started | |
 | 7. Pipeline | ⬜ Not started | |
 | 8. Full Run | ⬜ Not started | |
