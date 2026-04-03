@@ -41,13 +41,15 @@ class LLMClient:
         self.max_tokens = max_tokens
         self.client = OpenAI(base_url=base_url, api_key="not-needed")
 
-    def generate(self, messages: List[Dict[str, str]], temperature: float = None, max_tokens: int = None) -> LLMResponse:
+    def generate(self, messages: List[Dict[str, str]], temperature: float = None,
+                 max_tokens: int = None, enable_thinking: bool = False) -> LLMResponse:
         """Send a chat completion request and return structured response.
 
         Args:
             messages: List of {"role": ..., "content": ...} dicts.
             temperature: Override default temperature (optional).
             max_tokens: Override default max_tokens (optional).
+            enable_thinking: If True, allow Qwen3's <think> reasoning (default: False).
 
         Returns:
             LLMResponse with content and token usage.
@@ -57,11 +59,16 @@ class LLMClient:
             messages=messages,
             temperature=temperature if temperature is not None else self.temperature,
             max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+            extra_body={"chat_template_kwargs": {"enable_thinking": enable_thinking}},
         )
 
         usage = response.usage
+        content = response.choices[0].message.content.strip()
+        # Safety: strip any residual think tags
+        if not enable_thinking:
+            content, _ = strip_think_tags(content)
         return LLMResponse(
-            content=response.choices[0].message.content.strip(),
+            content=content,
             prompt_tokens=usage.prompt_tokens if usage else 0,
             completion_tokens=usage.completion_tokens if usage else 0,
             total_tokens=usage.total_tokens if usage else 0,
