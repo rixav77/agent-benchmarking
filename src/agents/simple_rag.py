@@ -8,7 +8,7 @@ import time
 
 from src.data.schema import QAExample, PredictionResult
 from src.agents.base import BaseAgent
-from src.agents.llm_client import LLMClient, strip_think_tags
+from src.agents.llm_client import LLMClient
 from src.retrieval.base import BaseRetriever
 
 
@@ -58,14 +58,11 @@ class SimpleRAGAgent(BaseAgent):
             {"role": "user", "content": user_prompt},
         ]
 
-        # Step 3: Call LLM
+        # Step 3: Call LLM (thinking disabled by default in client)
         response = self.llm_client.generate(messages)
 
-        # Step 4: Strip thinking tags (Qwen3 outputs <think>...</think>)
-        clean_answer, _ = strip_think_tags(response.content)
-
-        # Step 5: Detect unanswerable
-        answer_lower = clean_answer.lower().strip()
+        # Step 4: Detect unanswerable
+        answer_lower = response.content.lower().strip()
         is_unanswerable_pred = any(
             keyword in answer_lower for keyword in self.unanswerable_keywords
         )
@@ -75,7 +72,7 @@ class SimpleRAGAgent(BaseAgent):
         return PredictionResult(
             id=example.id,
             question=example.question,
-            predicted_answer=clean_answer,
+            predicted_answer=response.content,
             is_unanswerable_pred=is_unanswerable_pred,
             contexts_used=contexts_used,
             reasoning_trace="",  # Simple RAG has no reasoning trace
