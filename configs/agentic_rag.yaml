@@ -1,0 +1,8 @@
+# Agentic RAG agent config
+# Inherits ALL settings from base.yaml — no agent-specific eval params
+# Only the agent_type and agent-specific orchestration params differ
+
+agent:
+  type: agentic_rag
+  description: "Multi-step CRAG/Self-RAG: retrieve → assess → rewrite → check answerability → generate with verification"
+  max_retries: 2  # Max query rewrite attempts before proceeding
