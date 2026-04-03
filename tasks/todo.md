@@ -61,7 +61,7 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 3: Retrieval Backbone ⬜
+## Phase 3: Retrieval Backbone ✅
 **Session goal**: BM25 and embedding retrievers working, retrieval metrics computed.
 
 - [ ] Implement `src/retrieval/base.py` — retriever interface (returns list of (context, score) tuples)
@@ -71,6 +71,9 @@ Any violation of these invariants is a bug.
   - Hit-rate@k: does gold context appear in top-k?
   - Mean Reciprocal Rank (MRR): 1/rank of gold context
 - [ ] **Verify**: Both retrievers return gold context in top-5 for sample queries. Report hit-rate@5 and MRR.
+  - BM25: hit-rate@5 = 0.920, MRR = 0.806 (50 answerable samples)
+  - BGE Embedding: hit-rate@5 = 0.940, MRR = 0.848 (50 answerable samples)
+  - Both index same 695 unique contexts, embedding cache on disk
 
 **Consistency note**: Both agents will use the SAME retriever instance (configured in base.yaml). The retriever is built once, shared by both agents.
 
@@ -78,7 +81,7 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 4: Simple RAG Agent ⬜
+## Phase 4: Simple RAG Agent ✅
 **Session goal**: Single-pass RAG agent answering questions via local vLLM.
 
 **Pre-req**: vLLM server running with Llama 3.3 70B.
@@ -237,8 +240,8 @@ Any violation of these invariants is a bug.
 |-------|--------|-------------|
 | 1. Scaffold & Env | ✅ Complete | 2026-04-01 |
 | 2. Dataset | ✅ Complete | 2026-04-01 |
-| 3. Retrieval | ⬜ Not started | |
-| 4. Simple RAG | ⬜ Not started | |
+| 3. Retrieval | ✅ Complete | 2026-04-03 |
+| 4. Simple RAG | ✅ Complete | 2026-04-03 |
 | 5. Agentic RAG | ⬜ Not started | |
 | 6. Evaluation | ⬜ Not started | |
 | 7. Pipeline | ⬜ Not started | |
