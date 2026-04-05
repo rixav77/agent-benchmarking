@@ -1,0 +1,26 @@
+# Experiment configuration — extends base.yaml
+# run_benchmark.py loads base.yaml first, then deep-merges this file on top.
+
+task: rag_eval
+
+agents:
+  - simple_rag
+  - agentic_rag
+
+retriever:
+  type: bm25   # bm25 | embedding — overrides base.yaml retriever.type
+
+metrics:
+  - em
+  - f1
+  - semantic
+  - j_answerability
+  - j_correctness
+
+dataset:
+  num_questions: 1000
+  seed: 42
+
+pipeline:
+  run_judge: true    # set false to skip Tier 3 LLM judge (faster)
+  resume: true       # resume interrupted runs from existing JSONL
