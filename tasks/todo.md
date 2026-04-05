@@ -139,7 +139,7 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 6: Evaluation Engine ⬜
+## Phase 6: Evaluation Engine ✅
 **Session goal**: Full evaluation suite — one codepath for both agents.
 
 - [ ] Implement `src/evaluation/metrics.py` — EM, token F1, unanswerable accuracy
@@ -264,7 +264,7 @@ Any violation of these invariants is a bug.
 | 3. Retrieval | ✅ Complete | 2026-04-03 |
 | 4. Simple RAG | ✅ Complete | 2026-04-03 |
 | 5. Agentic RAG | ✅ Complete | 2026-04-04 |
-| 6. Evaluation | ⬜ Not started | |
+| 6. Evaluation | ✅ Complete | 2026-04-05 |
 | 7. Pipeline | ⬜ Not started | |
 | 8. Full Run | ⬜ Not started | |
 | 9. Visualization | ⬜ Not started | |
