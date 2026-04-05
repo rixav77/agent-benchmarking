@@ -171,33 +171,37 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 7: Pipeline Runner ⬜
+## Phase 7: Pipeline Runner ✅
 **Session goal**: End-to-end pipeline with config-driven experiments.
 
 **Pre-req**: vLLM server running.
 
-- [ ] Implement `src/pipeline/runner.py` — run agent on dataset, save JSONL
-  - Checkpointing/resume support
+- [x] Implement `src/pipeline/runner.py` — run agent on dataset, save JSONL
+  - Checkpointing/resume support (crash-safe append+flush)
   - Logs: question_id, agent_type, predicted_answer, latency_ms
-- [ ] Implement `src/pipeline/evaluate.py` — compute all metrics from predictions JSONL
+- [x] Implement `src/pipeline/evaluate.py` — compute all metrics from predictions JSONL
   - Calls the SAME evaluator.py for both agents
-- [ ] Implement `src/pipeline/compare.py` — compare two agents side by side
+- [x] Implement `src/pipeline/compare.py` — compare two agents side by side
   - Statistical comparison: mean, std, 95% confidence intervals (t-distribution)
   - Per-category breakdown: answerable vs unanswerable
   - Retrieval quality: hit-rate@k, MRR (shared retriever, so should be identical — assert this)
   - Cost/latency ratio: avg tokens per query (prompt + completion), avg latency, agentic/simple ratio
-- [ ] Create `configs/experiment.yaml` — experiment config schema:
-  - `task`: rag_eval (extensible to retrieval_eval, k_ablation later)
-  - `agents`: [simple_rag, agentic_rag]
-  - `retriever`: bm25 | bge (shared)
-  - `metrics`: [em, f1, semantic, j_answerability, j_correctness]
-  - `dataset.num_questions`, `dataset.seed`
-- [ ] Create `run_benchmark.py` — CLI entry point that reads experiment config and dispatches
-- [ ] **Verify**: End-to-end on 50 questions for both agents
-  - Assert both agents answered the SAME 50 questions
-  - Assert evaluation used identical metric functions
+- [x] Create `configs/experiment.yaml` — experiment config schema
+- [x] Create `run_benchmark.py` — CLI entry point (--mode run/evaluate/compare/all)
+- [x] **Verify**: End-to-end on 50 questions for both agents
+  - Both agents answered the SAME 50 questions (same IDs, same order) ✅
+  - Evaluation used identical metric functions (single codepath) ✅
+  - Resume works (re-run skips completed questions) ✅
+  - Tier invariant holds (EM ≤ Combined for both agents) ✅
+  - Comparison JSON has all expected keys ✅
 
-**Done when**: Both agents run on 50 questions, metrics JSON produced, comparison shows identical eval conditions.
+**Results (50-question test, no judge):**
+  - Simple RAG: EM=0.520, F1=0.660, Combined=0.680
+  - Agentic RAG: EM=0.520, F1=0.665, Combined=0.700
+  - Agentic uses 4.5x latency, 3.3x tokens vs Simple
+  - Retrieval: hit_rate@5=1.000, MRR=0.960
+
+**Done**: Both agents run on 50 questions, metrics JSON produced, comparison shows identical eval conditions.
 
 ---
 
@@ -265,7 +269,7 @@ Any violation of these invariants is a bug.
 | 4. Simple RAG | ✅ Complete | 2026-04-03 |
 | 5. Agentic RAG | ✅ Complete | 2026-04-04 |
 | 6. Evaluation | ✅ Complete | 2026-04-05 |
-| 7. Pipeline | ⬜ Not started | |
+| 7. Pipeline | ✅ Complete | 2026-04-06 |
 | 8. Full Run | ⬜ Not started | |
 | 9. Visualization | ⬜ Not started | |
 | 10. Report & Docs | ⬜ Not started | |
