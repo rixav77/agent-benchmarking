@@ -205,19 +205,35 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 8: Full Benchmark Run ⬜
+## Phase 8: Full Benchmark Run 🔶 (Partially Complete)
 **Session goal**: Run both agents on 1000+ questions, full evaluation.
 
 **Pre-req**: vLLM server running (will take a while).
 
-- [ ] Run Simple RAG on full dataset (1000+ questions)
-- [ ] Run Agentic RAG on full dataset (SAME 1000+ questions, same order)
-- [ ] Run 3-tier evaluation on both sets of predictions (same evaluator, same config)
-- [ ] Run LLM-as-a-judge on both sets (blind, shuffled)
+- [x] Run Simple RAG on full dataset (1000 questions)
+- [x] Run Agentic RAG on full dataset (SAME 1000 questions, same order)
+- [x] Run 3-tier evaluation on both sets of predictions (same evaluator, same config)
+- [x] Run LLM-as-a-judge on both sets (blind, same judge config)
 - [ ] Generate comparison results with confidence intervals
-- [ ] **Sanity check**: Verify question sets are identical, eval config is identical
+- [x] **Sanity check**: Verify question sets are identical, eval config is identical
 
-**Done when**: All evaluation JSONs exist. Comparison report shows both agents evaluated under identical conditions.
+**Results (1000 questions, full 3-tier with judge):**
+  - Simple RAG: EM=0.514, F1=0.607, Combined=0.691, Unanswerable Detection=56.2%
+  - Agentic RAG: EM=0.519, F1=0.626, Combined=0.720, Unanswerable Detection=61.2%
+  - Tier distribution (Simple): tier1=623, tier2=4, tier3=64, none=309
+  - Tier distribution (Agentic): tier1=641, tier2=5, tier3=74, none=280
+  - Judge faithfulness: Simple=422 faithful, Agentic=424 faithful
+  - Agentic wins on combined accuracy (+2.9%) and unanswerable detection (+5.0%)
+  - Simple wins on answerable EM (+4.0%) and answerable F1 (+1.4%)
+
+**Files saved (gitignored, on disk):**
+  - evaluation/predictions/simple_rag_predictions.jsonl (1000 predictions)
+  - evaluation/predictions/agentic_rag_predictions.jsonl (1000 predictions)
+  - evaluation/results/simple_rag_results.json (full per-question results)
+  - evaluation/results/agentic_rag_results.json (full per-question results)
+  - evaluation/results/*_summary.json (aggregate summaries)
+
+**Remaining**: Run comparison phase (statistics, CIs — quick, no LLM calls needed).
 
 ---
 
@@ -270,6 +286,6 @@ Any violation of these invariants is a bug.
 | 5. Agentic RAG | ✅ Complete | 2026-04-04 |
 | 6. Evaluation | ✅ Complete | 2026-04-05 |
 | 7. Pipeline | ✅ Complete | 2026-04-06 |
-| 8. Full Run | ⬜ Not started | |
+| 8. Full Run | 🔶 Partial (comparison pending) | 2026-04-07 |
 | 9. Visualization | ⬜ Not started | |
 | 10. Report & Docs | ⬜ Not started | |
