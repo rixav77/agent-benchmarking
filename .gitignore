@@ -210,7 +210,8 @@ __marimo__/
 data/
 evaluation/predictions/
 evaluation/checkpoints/
-evaluation/results/
+# Track summaries and comparison but ignore large per-question files
+evaluation/results/*_results.json
 reports/figures/
 *.jsonl
 model_cache/

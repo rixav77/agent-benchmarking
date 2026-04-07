@@ -1,0 +1,27 @@
+{
+  "em": 0.519,
+  "f1": 0.6257493655488376,
+  "unanswerable_accuracy": 0.745,
+  "answerable_em": 0.426,
+  "answerable_f1": 0.6394987310976763,
+  "unanswerable_detection_rate": 0.612,
+  "semantic_accuracy": 0.238,
+  "avg_semantic_similarity": 0.3703607332706451,
+  "avg_j_correctness": 0.9329157175398634,
+  "avg_j_completeness": 4.715261958997722,
+  "j_faithfulness_dist": {
+    "faithful": 424,
+    "partial": 6,
+    "unfaithful": 9
+  },
+  "combined_accuracy": 0.72,
+  "tier_distribution": {
+    "tier1": 641,
+    "tier2": 5,
+    "tier3": 74,
+    "none": 280
+  },
+  "total_questions": 1000,
+  "answerable_count": 500,
+  "unanswerable_count": 500
+}
