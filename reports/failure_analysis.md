@@ -24,7 +24,7 @@
   - Q: "What are sometimes present in the plug's firebox crown?"
     Gold: (unanswerable)
     Pred: Lead fusible plugs may be present in the crown of the boiler's firebox.
-    F1=0.000, Tier=none
+    F1=0.000, Tier=none.
 
 **Agentic RAG examples:**
 
