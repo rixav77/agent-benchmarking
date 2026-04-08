@@ -33,7 +33,7 @@ src/
   analysis/      # Visualization (11 charts), failure analysis
 configs/         # YAML configs (base, experiment, per-agent)
 evaluation/      # Results, summaries, comparison JSON
-reports/         # Charts, analysis reports, benchmark report
+reports/         # Charts, analysis reports,benchmark report
 demo/            # Web demo app for side-by-side comparison
 ```
 
