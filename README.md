@@ -69,8 +69,8 @@ agent-benchmarking/
 
 ### Prerequisites
 - Python 3.11
-- NVIDIA GPU with 30+ GB VRAM (for vLLM serving Qwen3-14B)
-- ~10 GB disk for model weights
+- NVIDIA GPU (for vLLM serving Qwen3-14B)
+- disk storage for model weights
 
 ### 1. Create environment
 
@@ -95,8 +95,6 @@ python -m vllm.entrypoints.openai.api_server \
     --gpu-memory-utilization 0.9 \
     --max-model-len 8192
 ```
-
-Wait until you see "Uvicorn running on http://0.0.0.0:8000".
 
 ### 4. Verify setup
 
