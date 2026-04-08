@@ -238,24 +238,36 @@ Any violation of these invariants is a bug.
 
 ---
 
-## Phase 9: Analysis & Visualization ⬜
+## Phase 9: Analysis & Visualization ✅
 **Session goal**: Charts, failure analysis, all figures generated.
 
-- [ ] Implement `src/analysis/visualize.py`:
-  - Bar charts comparing both agents on all metrics
-  - Histograms of score distributions (side by side)
+- [x] Implement `src/analysis/visualize.py` — 10 chart functions:
+  - Metric comparison bar chart with 95% CI error bars
+  - Per-category breakdown (answerable vs unanswerable)
+  - F1 score distribution (KDE histograms)
+  - Tier distribution (grouped bars)
+  - Cost-accuracy trade-off scatter
+  - Latency distribution histograms with p50/p95
+  - Token usage comparison with ratios
   - Confusion matrices for unanswerable detection (both agents)
-  - Per-category breakdown (answerable vs unanswerable performance)
-- [ ] Implement `src/analysis/failure_analysis.py`:
-  - LLM-based failure categorization (for both agents):
-    - RAG failures: missed context, not extracted, wrong format
-    - LLM failures: hallucination, fabrication, logical inconsistency
-  - Compare failure distributions between agents
-  - Plot failure type counts (side by side)
-- [ ] Generate all figures to `reports/figures/`
-- [ ] **Verify**: Charts render correctly, both agents shown in every comparison
+  - Faithfulness distribution (stacked bars)
+  - Completeness score distribution
+- [x] Implement `src/analysis/failure_analysis.py`:
+  - 4 failure categories: False Positive, False Negative, Wrong Answer, Faithfulness
+  - Failure mode breakdown chart (chart 11)
+  - reports/failure_analysis.md — failure table with examples
+  - reports/analysis_summary.md — strengths, weaknesses, trade-offs, conclusion
+- [x] Implement `src/analysis/run_analysis.py` — CLI runner
+- [x] Generate all 11 figures to `reports/figures/`
+- [x] **Verify**: All charts render correctly, both agents shown in every comparison
 
-**Done when**: All charts saved, failure analysis complete for both agents.
+**Key findings:**
+  - Dominant failure: adversarial unanswerable questions (Simple=219, Agentic=194 false positives)
+  - Agentic reduces false positives by 25 cases (11.4% reduction) via answerability checking
+  - Both agents >96% faithful — faithfulness is not a major concern
+  - Trade-off: +2.9pp accuracy costs 5.46x latency and 3.5x tokens
+
+**Done**: 11 charts + 2 analysis reports generated.
 
 ---
 
@@ -288,5 +300,5 @@ Any violation of these invariants is a bug.
 | 6. Evaluation | ✅ Complete | 2026-04-05 |
 | 7. Pipeline | ✅ Complete | 2026-04-06 |
 | 8. Full Run | ✅ Complete | 2026-04-08 |
-| 9. Visualization | ⬜ Not started | |
+| 9. Visualization | ✅ Complete | 2026-04-08 |
 | 10. Report & Docs | ⬜ Not started | |

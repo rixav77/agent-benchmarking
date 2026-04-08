@@ -212,7 +212,7 @@ evaluation/predictions/
 evaluation/checkpoints/
 # Track summaries and comparison but ignore large per-question files
 evaluation/results/*_results.json
-reports/figures/
+# reports/figures/ — tracked (visualization outputs)
 *.jsonl
 model_cache/
 .cache/
